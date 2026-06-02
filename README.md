@@ -1,5 +1,3 @@
-# ACEPlay_AdminPanel
-
 # ACEPlay Admin System
 
 Admin panel and REST API for managing ACEPlay website content including casinos, promotions, banners, games, navigation menus, homepage sections, and site settings.
