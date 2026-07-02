@@ -14,8 +14,8 @@ export const useAuth = () => {
   const user = useState<AdminUser | null>('admin_user', () => null);
 
   const authBase = computed(() => {
-    const admin = config.public.apiBase as string;
-    return admin.replace(/\/api\/admin\/?$/, '/api/auth');
+    const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
+    return `${apiUrl}/api/auth`;
   });
 
   const setSession = (data: AdminUser & { token: string }) => {

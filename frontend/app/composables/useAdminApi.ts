@@ -7,7 +7,8 @@ export interface ApiResponse<T> {
 
 export const useAdminApi = () => {
   const config = useRuntimeConfig();
-  const base = config.public.apiBase as string;
+  const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
+  const base = `${apiUrl}/api/admin`;
   const { token } = useAuth();
 
   const headers = () => ({

@@ -15,8 +15,8 @@ const selectedCasino = ref<any | null>(null);
 const config = useRuntimeConfig();
 const token = useCookie<string | null>('admin_token');
 const authBase = computed(() => {
-  const admin = config.public.apiBase as string;
-  return admin.replace(/\/api\/admin\/?$/, '/api/auth');
+  const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
+  return `${apiUrl}/api/auth`;
 });
 
 const qrCodeUrl = ref('');

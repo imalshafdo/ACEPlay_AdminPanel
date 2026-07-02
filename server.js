@@ -50,6 +50,8 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/public', publicRoutes);
 
+const authRoutes = require('./routes/auth');
+
 const adminRouter = express.Router();
 adminRouter.use(protect);
 adminRouter.use('/site-settings', siteSettingsRoutes);

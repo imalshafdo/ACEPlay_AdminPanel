@@ -8,7 +8,8 @@ definePageMeta({
 
 const config = useRuntimeConfig();
 const token = useCookie<string | null>('admin_token');
-const apiBase = config.public.apiBase as string;
+const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
+const apiBase = `${apiUrl}/api/admin`;
 
 interface UserRow {
   _id: string;
