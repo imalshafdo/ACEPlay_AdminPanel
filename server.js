@@ -27,7 +27,10 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://ace-play-admin-frontend.vercel.app',
+  credentials: true // Allow cookies/sessions if your login system uses them
+}));
 app.use(express.json());
 
 app.get('/', (req, res) => {

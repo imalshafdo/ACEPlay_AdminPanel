@@ -100,6 +100,15 @@ const verify2FA = async () => {
     verificationLoading.value = false;
   }
 };
+
+const copyToClipboard = async (text: string, successMessage: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    alert(successMessage);
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
+  }
+};
 </script>
 
 <template>
@@ -170,7 +179,7 @@ const verify2FA = async () => {
         <span class="dev-sms-badge">Simulated SMS</span>
         <p class="dev-sms-text">
           A verification code has been simulated and sent to <strong>{{ phone }}</strong>:
-          <code class="dev-code" title="Click to copy" @click="navigator.clipboard.writeText(smsCode); alert('Copied code!')">{{ smsCode }}</code>
+          <code class="dev-code" title="Click to copy" @click="copyToClipboard(smsCode, 'Copied code!')">{{ smsCode }}</code>
         </p>
       </div>
 
@@ -178,7 +187,7 @@ const verify2FA = async () => {
         <img v-if="qrCodeUrl" :src="qrCodeUrl" alt="2FA QR Code" class="qr-img-register" />
         <div class="secret-key-section">
           <span class="secret-label">Setup Key:</span>
-          <code class="secret-value" title="Click to copy" @click="navigator.clipboard.writeText(manualSecret); alert('Copied secret key!')">{{ manualSecret }}</code>
+          <code class="secret-value" title="Click to copy" @click="copyToClipboard(manualSecret, 'Copied secret key!')">{{ manualSecret }}</code>
         </div>
       </div>
 

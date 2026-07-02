@@ -131,6 +131,15 @@ onMounted(() => {
     load2FASetup();
   }
 });
+
+const copyToClipboard = async (text: string, successMessage: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    alert(successMessage);
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
+  }
+};
 </script>
 
 <template>
@@ -196,7 +205,7 @@ onMounted(() => {
               <ol>
                 <li>Scan the QR code above with Google Authenticator or your preferred TOTP app.</li>
                 <li>If you cannot scan, manually enter the setup key:
-                  <code class="secret-key" title="Click to copy" @click="navigator.clipboard.writeText(manualSecret); alert('Copied secret key to clipboard!')">{{ manualSecret || 'Loading...' }}</code>
+                  <code class="secret-key" title="Click to copy" @click="copyToClipboard(manualSecret, 'Copied secret key to clipboard!')">{{ manualSecret || 'Loading...' }}</code>
                 </li>
                 <li>Enter the 6-digit code displayed in your app below to complete the setup.</li>
               </ol>
