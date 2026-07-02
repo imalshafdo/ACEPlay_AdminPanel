@@ -7,8 +7,7 @@ export interface ApiResponse<T> {
 
 export const useAdminApi = () => {
   const config = useRuntimeConfig();
-  const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
-  const base = `${apiUrl}/api/admin`;
+  const base = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
   const { token } = useAuth();
 
   const headers = () => ({
@@ -35,33 +34,33 @@ export const useAdminApi = () => {
 
   const list = <T>(endpoint: string, query?: Record<string, string>) => {
     const qs = query ? `?${new URLSearchParams(query)}` : '';
-    return request<ApiResponse<T[]>>(`/${endpoint}${qs}`);
+    return request<ApiResponse<T[]>>(`/api/admin/${endpoint}${qs}`);
   };
 
   const getOne = <T>(endpoint: string, id: string) =>
-    request<ApiResponse<T>>(`/${endpoint}/${id}`);
+    request<ApiResponse<T>>(`/api/admin/${endpoint}/${id}`);
 
   const create = <T>(endpoint: string, body: Record<string, unknown>, query?: Record<string, string>) => {
     const qs = query ? `?${new URLSearchParams(query)}` : '';
-    return request<ApiResponse<T>>(`/${endpoint}${qs}`, { method: 'POST', body: JSON.stringify(body) });
+    return request<ApiResponse<T>>(`/api/admin/${endpoint}${qs}`, { method: 'POST', body: JSON.stringify(body) });
   };
 
   const update = <T>(endpoint: string, id: string, body: Record<string, unknown>, query?: Record<string, string>) => {
     const qs = query ? `?${new URLSearchParams(query)}` : '';
-    return request<ApiResponse<T>>(`/${endpoint}/${id}${qs}`, { method: 'PUT', body: JSON.stringify(body) });
+    return request<ApiResponse<T>>(`/api/admin/${endpoint}/${id}${qs}`, { method: 'PUT', body: JSON.stringify(body) });
   };
 
   const updateSingleton = <T>(endpoint: string, body: Record<string, unknown>) =>
-    request<ApiResponse<T>>(`/${endpoint}`, { method: 'PUT', body: JSON.stringify(body) });
+    request<ApiResponse<T>>(`/api/admin/${endpoint}`, { method: 'PUT', body: JSON.stringify(body) });
 
-  const getSingleton = <T>(endpoint: string) => request<ApiResponse<T>>(`/${endpoint}`);
+  const getSingleton = <T>(endpoint: string) => request<ApiResponse<T>>(`/api/admin/${endpoint}`);
 
   const remove = (endpoint: string, id: string, query?: Record<string, string>) => {
     const qs = query ? `?${new URLSearchParams(query)}` : '';
-    return request<ApiResponse<unknown>>(`/${endpoint}/${id}${qs}`, { method: 'DELETE' });
+    return request<ApiResponse<unknown>>(`/api/admin/${endpoint}/${id}${qs}`, { method: 'DELETE' });
   };
 
-  const getAuditLogs = <T>() => request<ApiResponse<T[]>>('/logs');
+  const getAuditLogs = <T>() => request<ApiResponse<T[]>>('/api/admin/logs');
 
   return { list, getOne, create, update, updateSingleton, getSingleton, remove, getAuditLogs };
 };

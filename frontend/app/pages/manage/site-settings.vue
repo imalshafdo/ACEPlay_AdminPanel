@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getResource } from '~/utils/resources';
 
+
 definePageMeta({ layout: 'default' });
 
 const resource = getResource('site-settings')!;

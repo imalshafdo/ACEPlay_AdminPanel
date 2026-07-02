@@ -13,9 +13,8 @@ export const useAuth = () => {
   const token = useCookie<string | null>('admin_token', { maxAge: 60 * 60 * 24 * 7 });
   const user = useState<AdminUser | null>('admin_user', () => null);
 
-  const authBase = computed(() => {
-    const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
-    return `${apiUrl}/api/auth`;
+  const apiRoot = computed(() => {
+    return (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
   });
 
   const setSession = (data: AdminUser & { token: string }) => {
@@ -36,7 +35,7 @@ export const useAuth = () => {
 
   const register = async (name: string, email: string, password: string) => {
     const res = await $fetch<{ success: boolean; data: AdminUser & { token: string } }>(
-      `${authBase.value}/register`,
+      `${apiRoot.value}/api/auth/register`,
       { method: 'POST', body: { name, email, password } }
     );
     setSession(res.data);
@@ -53,7 +52,7 @@ export const useAuth = () => {
       secret?: string;
       data?: AdminUser & { token: string };
     }>(
-      `${authBase.value}/login`,
+      `${apiRoot.value}/api/auth/login`,
       { method: 'POST', body: { email, password, twoFactorToken } }
     );
     if (res.requiresPasswordChange) {
@@ -79,7 +78,7 @@ export const useAuth = () => {
       success: boolean;
       data: AdminUser & { token: string };
     }>(
-      `${authBase.value}/onboarding-setup`,
+      `${apiRoot.value}/api/auth/onboarding-setup`,
       {
         method: 'POST',
         body: { userId, newPassword, twoFactorToken }
@@ -100,7 +99,7 @@ export const useAuth = () => {
   const fetchMe = async () => {
     if (!token.value) return null;
     try {
-      const res = await $fetch<{ success: boolean; data: AdminUser }>(`${authBase.value}/me`, {
+      const res = await $fetch<{ success: boolean; data: AdminUser }>(`${apiRoot.value}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token.value}` },
       });
       user.value = {

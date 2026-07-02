@@ -22,9 +22,9 @@ const verificationLoading = ref(false);
 const { setSession } = useAuth();
 const config = useRuntimeConfig();
 
-const authBase = computed(() => {
+const apiRoot = computed(() => {
   const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
-  return `${apiUrl}/api/auth`;
+  return apiUrl;
 });
 
 const submit = async () => {
@@ -50,7 +50,7 @@ const submit = async () => {
         secret: string;
         smsCode?: string;
       }
-    }>(`${authBase.value}/register`, {
+    }>(`${apiRoot.value}/api/auth/register`, {
       method: 'POST',
       body: {
         name: name.value,
@@ -82,7 +82,7 @@ const verify2FA = async () => {
     const res = await $fetch<{
       success: boolean;
       data: any;
-    }>(`${authBase.value}/register/verify`, {
+    }>(`${apiRoot.value}/api/auth/register/verify`, {
       method: 'POST',
       body: {
         userId: userId.value,

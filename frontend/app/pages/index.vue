@@ -14,9 +14,9 @@ const selectedCasino = ref<any | null>(null);
 
 const config = useRuntimeConfig();
 const token = useCookie<string | null>('admin_token');
-const authBase = computed(() => {
+const apiRoot = computed(() => {
   const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
-  return `${apiUrl}/api/auth`;
+  return apiUrl;
 });
 
 const qrCodeUrl = ref('');
@@ -28,7 +28,7 @@ const setupLoading = ref(false);
 const load2FASetup = async () => {
   setupError.value = '';
   try {
-    const res = await $fetch<any>(`${authBase.value}/2fa/setup`, {
+    const res = await $fetch<any>(`${apiRoot.value}/api/auth/2fa/setup`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token.value}` }
     });
@@ -48,7 +48,7 @@ const handleVerifySetup = async () => {
   setupLoading.value = true;
   setupError.value = '';
   try {
-    const res = await $fetch<any>(`${authBase.value}/2fa/verify`, {
+    const res = await $fetch<any>(`${apiRoot.value}/api/auth/2fa/verify`, {
       method: 'POST',
       body: { token: twoFactorSetupCode.value },
       headers: { Authorization: `Bearer ${token.value}` }

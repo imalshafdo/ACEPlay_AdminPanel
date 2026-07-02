@@ -8,8 +8,7 @@ definePageMeta({
 
 const config = useRuntimeConfig();
 const token = useCookie<string | null>('admin_token');
-const apiUrl = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
-const apiBase = `${apiUrl}/api/admin`;
+const apiRoot = (config.public.apiUrl as string || 'http://localhost:5000').replace(/\/$/, '');
 
 interface UserRow {
   _id: string;
@@ -28,7 +27,7 @@ const loadUsers = async () => {
   loading.value = true;
   error.value = '';
   try {
-    const res = await $fetch<{ success: boolean; data: UserRow[] }>(`${apiBase}/users`, {
+    const res = await $fetch<{ success: boolean; data: UserRow[] }>(`${apiRoot}/api/admin/users`, {
       headers: { Authorization: `Bearer ${token.value}` },
     });
     users.value = res.data ?? [];
@@ -47,7 +46,7 @@ const handleReset2FA = async (userId: string, email: string) => {
 
   resettingId.value = userId;
   try {
-    const res = await $fetch<{ success: boolean; message: string }>(`${apiBase}/reset-2fa/${userId}`, {
+    const res = await $fetch<{ success: boolean; message: string }>(`${apiRoot}/api/admin/reset-2fa/${userId}`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token.value}` },
     });
