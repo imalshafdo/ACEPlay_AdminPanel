@@ -3,12 +3,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   runtimeConfig: {
-    public: {
-      apiUrl:
-        process.env.NEXT_PUBLIC_API_URL ||
-        'http://localhost:5000',
-    },
+  public: {
+    apiUrl:
+      process.env.NUXT_PUBLIC_API_URL ||
+      'http://localhost:5000',
   },
+},
 
   css: ['~/assets/css/main.css'],
 })

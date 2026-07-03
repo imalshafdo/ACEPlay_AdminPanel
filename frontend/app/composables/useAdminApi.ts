@@ -32,6 +32,17 @@ export const useAdminApi = () => {
     return json;
   };
 
+  // ==========================================
+  // ✨ ADD THIS NEW HELPER FOR LOGIN & 2FA ✨
+  // ==========================================
+  const authRequest = <T>(endpoint: string, method: string, body: Record<string, unknown>) => {
+    return request<ApiResponse<T>>(`/api/auth/${endpoint.replace(/^\//, '')}`, {
+      method,
+      body: JSON.stringify(body)
+    });
+  };
+
+  // Existing Admin routes (Leave these exactly as they are!)
   const list = <T>(endpoint: string, query?: Record<string, string>) => {
     const qs = query ? `?${new URLSearchParams(query)}` : '';
     return request<ApiResponse<T[]>>(`/api/admin/${endpoint}${qs}`);
@@ -62,5 +73,6 @@ export const useAdminApi = () => {
 
   const getAuditLogs = <T>() => request<ApiResponse<T[]>>('/api/admin/logs');
 
-  return { list, getOne, create, update, updateSingleton, getSingleton, remove, getAuditLogs };
+  // Return authRequest along with the others
+  return { authRequest, list, getOne, create, update, updateSingleton, getSingleton, remove, getAuditLogs };
 };
